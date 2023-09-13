@@ -1,0 +1,77 @@
+.App {
+  text-align: center;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  color: white;
+}
+
+.project-container{
+  background-color: #e6e6e6;
+  color: #282c34;
+  padding: 15px;
+  margin: 15px;
+  border-radius: 13px;
+  min-width: 25rem;
+}
+
+.post-header{
+  background-color: #979292;
+  padding: 15px;
+  margin: 15px;
+  min-width: 25rem;
+  border-radius: 15px;
+}
+
+.post-header-done {
+  background-color: #27af1b;
+}
+
+.post-header:hover{
+  cursor: pointer;
+  background-color: #575454;
+  color: #a6a9af;
+}
+
+.post-body{
+  padding: 1px 15px;
+  margin: 1px 15px;
+  max-width: 25rem;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icons {
+  display: flex;
+  gap: 10px;
+}
+
+.material-symbols-outlined {
+  margin-top: -28px;
+}
+
+.material-symbols-outlined:hover {
+  cursor: pointer;
+  background-color: #575454;
+  color: #a6a9af;
+  padding: 15px;
+  border-radius: 28px;
+}
+
+.done:hover {
+  color: rgb(27, 175, 27);
+}
+
+.delete:hover {
+  color: rgb(235, 39, 39);
+}
+
+.edit:hover {
+  color: rgb(255, 164, 29);
+}
