@@ -1,9 +1,55 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase/init';
 
-export default class addProject extends Component {
-  render() {
-    return (
-      <div>addProject</div>
-    )
-  }
+export default function AddProject() {
+  const [projectName, setProjectName] = useState('');
+  const [projectDetails, setProjectDetails] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Yeni proje verilerini Firestore'a ekle
+    try {
+      const docRef = await addDoc(collection(db, 'projects'), {
+        project_name: projectName,
+        project_details: projectDetails,
+        complated: false
+        // Diğer proje alanları buraya ekleyebilirsin
+      });
+      console.log('Yeni proje eklendi. Belge kimliği:', docRef.id);
+
+      // Formu temizle
+      setProjectName('');
+      setProjectDetails('');
+    } catch (error) {
+      console.error('Hata:', error);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Yeni Proje Ekle</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="projectName">Proje Adı:</label>
+          <input
+            type="text"
+            id="projectName"
+            value={projectName}
+            onChange={(e) => setProjectName(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="projectDetails">Proje Ayrıntıları:</label>
+          <textarea
+            id="projectDetails"
+            value={projectDetails}
+            onChange={(e) => setProjectDetails(e.target.value)}
+          />
+        </div>
+        <button type="submit">Proje Ekle</button>
+      </form>
+    </div>
+  );
 }

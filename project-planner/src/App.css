@@ -27,10 +27,6 @@
   border-radius: 15px;
 }
 
-.post-header-done {
-  background-color: #27af1b;
-}
-
 .post-header:hover{
   cursor: pointer;
   background-color: #575454;

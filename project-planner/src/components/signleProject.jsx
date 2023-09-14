@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase/init';
+import { Link } from 'react-router-dom';
+
 
 export default function SingleProject() {
   const [projects, setProjects] = useState([]);
   const [showDetails, setShowDetails] = useState([]);
-  const [headerColor, setHeaderColor] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'projects'));
+        // Firestore sorgusu oluştur
+        const q = query(collection(db, 'projects'), where('complated', '==', false));
+
+        const querySnapshot = await getDocs(q);
         const projectData = [];
         querySnapshot.forEach((doc) => {
           projectData.push(doc.data());
@@ -32,31 +36,14 @@ export default function SingleProject() {
     }
   };
 
-  const toggleHeaderColor = (project_id) => {
-    const newHeaderColor = { ...headerColor };
-
-    if (newHeaderColor[project_id]) {
-      delete newHeaderColor[project_id];
-    } else {
-      newHeaderColor[project_id] = true;
-    }
-
-    setHeaderColor(newHeaderColor);
-
-    // Done'a tıklandığında details kapat
-    setShowDetails((prevShowDetails) => prevShowDetails.filter((id) => id !== project_id));
-  };
 
   return (
     <div className="project-container">
       {projects.map((project, project_id) => (
         <div className="project-post" key={project_id}>
           <div
-            className={`post-header ${
-              headerColor[project_id] ? 'post-header-done' : ''
-            }`}
+            className="post-header"
             onClick={() => toggleDetails(project_id)}
-            id={`header-${project_id}`}
           >
             <p>{project.project_name}</p>
           </div>
@@ -64,14 +51,11 @@ export default function SingleProject() {
             <div className="post-body">
               <p>{project.project_details}</p>
               <div className="icons">
-                <span
-                  className="material-symbols-outlined done"
-                  onClick={() => toggleHeaderColor(project_id)}
-                >
-                  done
-                </span>
+                <span className="material-symbols-outlined done">done</span>
                 <span className="material-symbols-outlined delete">delete</span>
-                <span className="material-symbols-outlined edit">edit</span>
+                <Link to={`/edit/${project_id}`}>
+                  <span className="material-symbols-outlined edit">edit</span>
+                </Link>
               </div>
             </div>
           )}
