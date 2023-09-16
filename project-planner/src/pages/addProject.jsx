@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase/init';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddProject() {
   const [projectName, setProjectName] = useState('');
   const [projectDetails, setProjectDetails] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,13 +17,16 @@ export default function AddProject() {
         project_name: projectName,
         project_details: projectDetails,
         complated: false
-        // Diğer proje alanları buraya ekleyebilirsin
       });
       console.log('Yeni proje eklendi. Belge kimliği:', docRef.id);
 
       // Formu temizle
       setProjectName('');
       setProjectDetails('');
+
+      
+      // Sayfayı yeniden yönlendir
+      navigate('/'); // Projelerin olduğu sayfaya geri dön
     } catch (error) {
       console.error('Hata:', error);
     }

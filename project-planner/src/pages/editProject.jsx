@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { doc, updateDoc, getDocs } from 'firebase/firestore';
+import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase/init';
 
 function EditProject() {
   const { project_id } = useParams();
   const [project, setProject] = useState({});
-  const navigate = useNavigate(); // useNavigate hook'unu içe aktardık
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const projectDocRef = doc(db, 'projects', project_id);
-
     const fetchProject = async () => {
       try {
-        const projectSnapshot = await getDocs(projectDocRef);
-        if (projectSnapshot.size > 0) {
-          setProject(projectSnapshot.docs[0].data());
+        const projectDocRef = doc(db, 'projects', project_id);
+        const projectSnapshot = await getDoc(projectDocRef);
+        if (projectSnapshot.exists()) {
+          setProject(projectSnapshot.data());
         } else {
           console.log('Proje bulunamadı');
         }
@@ -29,14 +28,21 @@ function EditProject() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
+  
+    // Belgeyi güncellemek için kullanılacak güncel veri
+    const updatedData = {
+      project_name: project.project_name,
+      project_details: project.project_details,
+      // Diğer alanları da buraya ekleyebilirsiniz
+    };
+  
     const projectDocRef = doc(db, 'projects', project_id);
-
+  
     try {
-      await updateDoc(projectDocRef, project);
-
+      await updateDoc(projectDocRef, updatedData);
+  
       console.log('Proje güncellendi');
-      navigate('/'); // Kullanıcıyı projelerin olduğu sayfaya yönlendirin
+      navigate('/'); // Kullanıcıyı projelerin olduğu sayfaya yönlendir
     } catch (error) {
       console.error('Hata:', error);
     }
