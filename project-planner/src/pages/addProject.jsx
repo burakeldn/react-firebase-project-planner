@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase/init';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function AddProject() {
   const [projectName, setProjectName] = useState('');
@@ -16,7 +16,7 @@ export default function AddProject() {
       const docRef = await addDoc(collection(db, 'projects'), {
         project_name: projectName,
         project_details: projectDetails,
-        complated: false
+        project_completed: false
       });
       console.log('Yeni proje eklendi. Belge kimliği:', docRef.id);
 
@@ -35,6 +35,9 @@ export default function AddProject() {
   return (
     <div>
       <h2>Yeni Proje Ekle</h2>
+      <Link to="/">
+        <button>Ana Sayfaya Dön</button>
+      </Link>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="projectName">Proje Adı:</label>

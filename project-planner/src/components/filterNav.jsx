@@ -10,9 +10,9 @@ export default function FilterNav({ updateProjects }) {
       if (newFilter === 'all') {
         q = query(collection(db, 'projects'));
       } else if (newFilter === 'ongoing') {
-        q = query(collection(db, 'projects'), where('completed', '==', false));
+        q = query(collection(db, 'projects'), where('project_completed', '==', false));
       } else if (newFilter === 'completed') {
-        q = query(collection(db, 'projects'), where('completed', '==', true));
+        q = query(collection(db, 'projects'), where('project_completed', '==', true));
       }
 
       const querySnapshot = await getDocs(q);

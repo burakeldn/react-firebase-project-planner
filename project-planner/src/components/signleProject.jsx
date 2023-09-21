@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, query, where, deleteDoc, doc } from 'firebase/firestore';
+import { collection, query, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/init';
 import { Link } from 'react-router-dom';
 
 export default function SingleProject() {
   const [projects, setProjects] = useState([]);
-  const [showDetails, setShowDetails] = useState([]);
+  const [selectedProject, setSelectedProject] = useState([]);
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Firestore sorgusu oluştur
-        const q = query(collection(db, 'projects'), where('complated', '==', false));
+        const q = query(collection(db, 'projects'));
 
         const querySnapshot = await getDocs(q);
         const projectData = [];
+
         querySnapshot.forEach((doc) => {
           projectData.push({ id: doc.id, ...doc.data() });
         });
+
+        // Sorgudan gelen verileri bileşen durumuna kaydedin
         setProjects(projectData);
       } catch (error) {
-        console.error('Error fetching projects:', error);
+        console.error('Hata:', error);
       }
     };
 
@@ -28,48 +31,64 @@ export default function SingleProject() {
   }, []);
 
 
-  // Proje detayını açma kapama
-  const toggleDetails = (project_id) => {
-    if (showDetails.includes(project_id)) {
-      setShowDetails(showDetails.filter((id) => id !== project_id));
+  const showProjectDetails = (project) => {
+    if (selectedProject.includes(project)) {
+      setSelectedProject(selectedProject.filter((id) => id !== project));
     } else {
-      setShowDetails([...showDetails, project_id]);
+      setSelectedProject([...selectedProject, project]);
     }
   };
 
-  // Projeyi firestore dan silme
-  const deletePost = async (id) => {
+
+  const deleteProject = async (projectId) => {
     try {
-      await deleteDoc(doc(db, 'projects', id));
-      const updatedProjects = [...projects];
-      const index = updatedProjects.findIndex((project) => project.id === id);
-      if (index !== -1) {
-        updatedProjects.splice(index, 1);
-        setProjects(updatedProjects);
-      }
+      await deleteDoc(doc(db, 'projects', projectId));
+      setProjects(projects.filter((project) => project.id !== projectId));
     } catch (error) {
       console.log('Error deleting document:', error);
     }
   }
 
+
+
+  const markProjectAsDone = async (projectId) => {
+    try {
+
+      await updateDoc(doc(db, 'projects', projectId), {
+         project_completed: true,
+       });
+
+      setProjects((prevProjects) =>
+        prevProjects.map((project) =>
+          project.id === projectId
+            ? { ...project, project_completed: true }
+            : project
+        )
+      );
+    } catch (error) {
+      console.error('Hata:', error);
+    }
+  };
+  
+
+
+
   return (
     <div className="project-container">
-      {projects.map((project, project_id) => (
-        <div className="project-post" key={project_id}>
-          <div
-            className="post-header"
-            onClick={() => toggleDetails(project_id)}
-          >
-            <p>{project.project_name}</p>
-          </div>
-          {showDetails.includes(project_id) && (
-            <div className="post-body">
+      {projects.map((project) => (
+        <div key={project.id} onClick={() => showProjectDetails(project)}>
+          <h3>{project.project_name}</h3>
+          {selectedProject.includes(project) && (
+            <div>
               <p>{project.project_details}</p>
               <div className="icons">
-                <span className="material-symbols-outlined done">done</span>
+                <span className="material-symbols-outlined done"
+                 onClick={() => markProjectAsDone(project.id)}
+                >done</span>
                 <span className="material-symbols-outlined delete"
-                  onClick={() => deletePost(project.id, project_id)} >delete</span>
-                <Link to={`/edit/${project_id}`}>
+                onClick={() => deleteProject(project.id)}
+                >delete</span>
+                <Link to={`/edit/${project.id}`}>
                   <span className="material-symbols-outlined edit">edit</span>
                 </Link>
               </div>
