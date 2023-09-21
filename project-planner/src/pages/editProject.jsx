@@ -6,7 +6,8 @@ import { db } from '../firebase/init';
 function EditProject() {
   const { project_id } = useParams();
   const navigate = useNavigate();
-  const [project, setProject] = useState({ project_name: '', project_details: '' }); // Varsayılan değerlerle başlatın.
+  // Varsayılan değerlerle başlatma.
+  const [project, setProject] = useState({ project_name: '', project_details: '' }); 
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -16,12 +17,11 @@ function EditProject() {
         if (projectSnapshot.exists()) {
           setProject(projectSnapshot.data());
         } else {
-          // Veriler yüklenmediğinde kullanıcıya bekleme mesajı verebilirsiniz.
           return <div>Bekleyin, veriler yükleniyor...</div>;
         }
         
         if (projectSnapshot.exists()) {
-          // Firestore'dan alınan verileri state'e atayın
+          // Firestore'dan alınan verileri state'e atama
           const projectData = projectSnapshot.data();
           setProject({
             project_name: projectData.project_name,
@@ -44,17 +44,17 @@ function EditProject() {
     const projectDocRef = doc(db, 'projects', project_id);
 
     try {
-      // Kullanıcının yaptığı düzenlemeleri alın
+      // Kullanıcının yaptığı düzenlemeleri alma
       const updatedProject = {
         project_name: project.project_name,
         project_details: project.project_details,
       };
 
-      // Firestore'da güncelleme yapın
+      // Firestore'da güncelleme yapma
       await updateDoc(projectDocRef, updatedProject);
 
       console.log('Proje güncellendi');
-      navigate('/'); // Kullanıcıyı projelerin olduğu sayfaya yönlendir
+      navigate('/');
     } catch (error) {
       console.error('Hata:', error);
     }

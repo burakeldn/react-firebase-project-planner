@@ -11,7 +11,7 @@ export default function AddProject() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Yeni proje verilerini Firestore'a ekle
+    // Yeni proje verilerini Firestore'a ekleme
     try {
       const docRef = await addDoc(collection(db, 'projects'), {
         project_name: projectName,
@@ -20,13 +20,13 @@ export default function AddProject() {
       });
       console.log('Yeni proje eklendi. Belge kimliği:', docRef.id);
 
-      // Formu temizle
+      // Formu temizleme
       setProjectName('');
       setProjectDetails('');
 
       
-      // Sayfayı yeniden yönlendir
-      navigate('/'); // Projelerin olduğu sayfaya geri dön
+      // Sayfayı yeniden yönlendirme
+      navigate('/');
     } catch (error) {
       console.error('Hata:', error);
     }

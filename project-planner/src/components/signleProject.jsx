@@ -20,7 +20,6 @@ export default function SingleProject() {
           projectData.push({ id: doc.id, ...doc.data() });
         });
 
-        // Sorgudan gelen verileri bileşen durumuna kaydedin
         setProjects(projectData);
       } catch (error) {
         console.error('Hata:', error);
