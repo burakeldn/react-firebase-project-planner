@@ -36,7 +36,7 @@ export default function AddProject() {
     <div>
       <h2>Yeni Proje Ekle</h2>
       <Link to="/">
-        <button>Ana Sayfaya Dön</button>
+        <button className='button' >Ana Sayfaya Dön</button>
       </Link>
       <form onSubmit={handleSubmit}>
         <div>
@@ -56,7 +56,7 @@ export default function AddProject() {
             onChange={(e) => setProjectDetails(e.target.value)}
           />
         </div>
-        <button type="submit">Proje Ekle</button>
+        <button className='button' type="submit">Proje Ekle</button>
       </form>
     </div>
   );

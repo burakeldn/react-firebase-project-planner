@@ -81,7 +81,7 @@ function EditProject() {
             onChange={(e) => setProject({ ...project, project_details: e.target.value })}
           />
         </div>
-        <button type="submit">Kaydet</button>
+        <button className='button' type="submit">Kaydet</button>
       </form>
     </div>
   );

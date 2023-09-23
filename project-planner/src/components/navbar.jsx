@@ -6,10 +6,10 @@ export default class navbar extends Component {
     return ( 
       <div>
         <Link to ="/">
-          <button>Projects</button>
+          <button className='button' >Projects</button>
         </Link>
       <Link to="/addproject">
-        <button>Add Project</button>
+        <button className='button' >Add Project</button>
       </Link>
     </div>
     )

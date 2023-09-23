@@ -30,9 +30,9 @@ export default function FilterNav({ updateProjects }) {
 
   return (
     <div>
-      <button onClick={() => handleFilterChange('all')}>Tümü</button>
-      <button onClick={() => handleFilterChange('ongoing')}>Devam Eden</button>
-      <button onClick={() => handleFilterChange('completed')}>Tamamlanan</button>
+      <button className='button' onClick={() => handleFilterChange('all')}>Tümü</button>
+      <button className='button' onClick={() => handleFilterChange('ongoing')}>Devam Eden</button>
+      <button className='button' onClick={() => handleFilterChange('completed')}>Tamamlanan</button>
     </div>
   );
 }

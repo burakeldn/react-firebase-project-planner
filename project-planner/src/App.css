@@ -10,6 +10,34 @@
   color: white;
 }
 
+/*Button style*/
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-top: 10px;
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #3498db;
+  color: #fff; 
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.button:hover {
+  background-color: #2980b9;
+  transform: scale(1.05);
+}
+
+.button:active {
+  background-color: #2471a3; 
+}
+/*Button style*/
+
 .project-container{
   background-color: #e6e6e6;
   color: #282c34;
